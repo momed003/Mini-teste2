@@ -6,8 +6,11 @@ package view;
 
 import java.awt.Color;
 import java.awt.Font;
+import java.awt.List;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import javax.print.DocFlavor;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JFormattedTextField;
@@ -30,93 +33,87 @@ public class TelaCalTest extends javax.swing.JFrame  {
      JButton btnsoma= new JButton("+");
      JButton btnsubtracao= new JButton("-");
      JButton btnMultiplicacao= new JButton("*");
-     JButton btnDivisao= new JButton("*");
+     JButton btnDivisao= new JButton("/");
      JButton btnClear= new JButton("C");
      JLabel  lblresultado=new JLabel("",JLabel.CENTER);
      JFormattedTextField txtNum1= new JFormattedTextField();
-    
      JFormattedTextField txtNum2= new JFormattedTextField();
      Calculadora cal=new Calculadora();
-     
-//      double num1=Double.parseDouble(txtNum1.getText());
-//     double num2=Double.parseDouble(txtNum1.getText());
+     private ArrayList <String>  historico;
        
      ActionListener al = new ActionListener() {
-         
-         public void ActionPerfomed(ActionEvent e){
-        if (e.getSource()==btnsoma){
-
-          
-        }
-        if (e.getSource()==btnsubtracao){
-            JOptionPane.showMessageDialog(null, "ehhh");
-        }
-        else if (e.getSource()==btnMultiplicacao){
-            JOptionPane.showMessageDialog(null, "ehhh");
-        }
-        else if (e.getSource()==btnDivisao){
-            JOptionPane.showMessageDialog(null, "ehhh");
-        }
-        else if (e.getSource()==btnClear){
-            JOptionPane.showMessageDialog(null, e);
-             
-        }
-        
-    }
 
          @Override
          public void actionPerformed(ActionEvent e) {
-             System.out.println(e);
-             //System.out.println(((JComponent)e.getSource()).getName()) ;
+             System.out.println(((JComponent)e.getSource()).getName()) ;
          }
      };
-    public TelaCalTest(){
+   
+     public TelaCalTest(){
+        historico=new ArrayList<>();
      //painel Principal
-//     double num1=Double.parseDouble(txtNum1.getText());
-//     double num2=Double.parseDouble(txtNum2.getText());
-    
+
             painel1.setBackground(Color.white);
             painel1.setLayout(null);
             lblresultado.setFont(new Font ("Calibri",Font.BOLD,12));
-//            lblresultado.setText();
             btnClear.setBackground(Color.BLACK);
             btnClear.setForeground(Color.white);
         
       //botoes acoes 
-            btnClear.setBounds(290, 50, 50, 40);
             btnClear.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-           
+                txtNum1.setText("");
+                txtNum2.setText("");
+                lblresultado.setText("");
+                
             }
             });
-            btnDivisao.setBounds(230, 50, 50, 40);
             btnDivisao.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                JOptionPane.showMessageDialog(rootPane, "Eu sou o cara");
+                double num1=Double.parseDouble(txtNum1.getText());
+                double num2=Double.parseDouble(txtNum2.getText());
+                if (num2!=0) {
+                    lblresultado.setText(String.valueOf(cal.divsao(num1, num2)));
+                    historico.add(lblresultado.getText());
+                }else{
+                    lblresultado.setText("esta operacao nao pode ocorrer");
+                }
+                 
             }
             });
-            btnMultiplicacao.setBounds(170, 50, 50, 40);
             btnMultiplicacao.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-               // JOptionPane.showMessageDialog(rootPane, "Eu sou o cara");
+               double num1=Double.parseDouble(txtNum1.getText());
+               double num2=Double.parseDouble(txtNum2.getText());
+               lblresultado.setText(String.valueOf(cal.multiplicacao(num1, num2)));
+                historico.add(lblresultado.getText());
             }
             });
-            btnsubtracao.setBounds(110, 50, 50, 40);
-             btnDivisao.addActionListener(new ActionListener(){
+            btnsubtracao.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                //JOptionPane.showMessageDialog(rootPane, "Eu sou o cara");
+                   double num1=Double.parseDouble(txtNum1.getText());
+                    double num2=Double.parseDouble(txtNum2.getText());
+                    lblresultado.setText(String.valueOf(cal.subtracao(num1, num2)));
+                     historico.add(lblresultado.getText());
             }
             });
-            btnsoma.setBounds(50, 50, 50, 40);
-             btnsoma.addActionListener(new ActionListener(){
+            btnsoma.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 
                 double num1=Double.parseDouble(txtNum1.getText());
                 double num2=Double.parseDouble(txtNum2.getText());
                 double soma=num1+num2;
                 lblresultado.setText(String.valueOf(soma));
+                 historico.add(lblresultado.getText());
             }
             });
+            
+        //LOCALIZACAO DOS BOTOES
+            btnClear.setBounds(290, 50, 50, 40);
+            btnDivisao.setBounds(230, 50, 50, 40);
+            btnMultiplicacao.setBounds(170, 50, 50, 40);
+            btnsubtracao.setBounds(110, 50, 50, 40);
+            btnsoma.setBounds(50, 50, 50, 40);
             txtNum1.setBounds(50, 110, 300, 40);
             txtNum2.setBounds(50, 200, 300, 40);
             lblresultado.setBounds(50, 300, 300, 40);
@@ -152,9 +149,15 @@ public class TelaCalTest extends javax.swing.JFrame  {
        
     }
    
+     public void lista(){
+         for (int i = 10; i < historico.size(); i--) {
+             System.out.println(historico);
+         }
+     }
     
     public static void main(String[] args) {
        new TelaCalTest();
+       
       
     }}
 
